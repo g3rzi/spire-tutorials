@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: oidc-discovery-provider
+  namespace: spire
+data:
+  oidc-discovery-provider.conf: |
+    log_level = "INFO"
+    # TODO: Replace MY_DISCOVERY_DOMAIN with the FQDN of the Discovery Provider that you will configure in DNS
+    domains = ["xxxxxxxxxxxxxx.compute.amazonaws.com"]
+    acme {
+        directory_url = "https://acme-v02.api.letsencrypt.org/directory"
+        cache_dir = "/run/spire"
+        tos_accepted = true
+        # TODO: Change MY_EMAIL_ADDRESS with your email
+        email = "myemail@example.com"
+    }
+    server_api {
+      address = "unix:///tmp/spire-server/private/api.sock"
+    }
+
+    health_checks {
+      listener_enabled = true
+      bind_address = "0.0.0.0"
+      bind_port = "8008"  # THIS tells the app to use 8008
+    }
